@@ -58,6 +58,8 @@ const Auth = () => {
           </div>
         </div>
 
+
+
         <div className="auth-form-side">
           <div className="form-content">
             <h2>{isSignup ? "Create Account" : "Login"}</h2>
