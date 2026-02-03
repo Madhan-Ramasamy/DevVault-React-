@@ -2,32 +2,28 @@
 
 /* --- COLORS --- */
 $bg: #000000;
-$panel: rgba(10, 10, 10, 0.7); /* Transparent for Blur */
+$panel: #0a0a0a;
 $cyan: #00f3ff;
 $green: #0aff00;
 $pink: #ff0055;
-$border: rgba(255,255,255,0.1);
+$border: #222;
 
 .app-container {
-  height: 100vh; width: 100vw;
+  min-height: 100vh; width: 100vw;
   background: $bg; color: white;
   font-family: 'Montserrat', sans-serif;
-  display: flex; flex-direction: column; overflow: hidden;
+  display: flex; flex-direction: column; overflow-x: hidden;
   
-  /* Background Mesh */
-  background-image: radial-gradient(circle at 50% 50%, #111 0%, #000 100%);
-  
-  &.scale-in { animation: zoomIn 0.5s ease forwards; }
+  &.scale-in { animation: fadeIn 0.5s ease forwards; }
   &.scale-out { opacity: 0; transform: scale(1.1); transition: 0.5s; }
 }
 
-/* NAVBAR (Blurred) */
+/* NAVBAR */
 .navbar {
-  height: 80px; flex-shrink: 0; padding: 0 2rem; 
-  background: rgba(5, 5, 5, 0.6); backdrop-filter: blur(12px);
+  height: 70px; padding: 0 2rem; background: rgba(0,0,0,0.8); backdrop-filter: blur(10px);
   border-bottom: 1px solid $border; display: flex; justify-content: space-between; align-items: center; z-index: 50;
   
-  .brand { display: flex; align-items: center; gap: 15px; font-weight: 900; font-size: 1.4rem; letter-spacing: 1px; cursor: pointer; text-transform: uppercase; }
+  .brand { display: flex; align-items: center; gap: 15px; font-weight: 900; font-size: 1.4rem; letter-spacing: 1px; cursor: pointer; }
   .user-controls {
       display: flex; gap: 15px; align-items: center;
       .name { font-family: 'Fira Code'; color: $cyan; font-weight: bold; }
@@ -41,163 +37,130 @@ $border: rgba(255,255,255,0.1);
   
   .floating-text-container {
       text-align: center; margin-bottom: 3rem; position: relative;
-      .main-title { font-size: 3.5rem; font-weight: 900; margin-bottom: 10px; text-transform: uppercase; color: white; text-shadow: 0 0 20px rgba(255,255,255,0.1); }
+      .main-title { font-size: 3rem; font-weight: 900; margin-bottom: 10px; text-transform: uppercase; color: white; }
       .subtitle { color: $green; font-family: 'Fira Code'; font-size: 1rem; letter-spacing: 3px; }
-      .float { position: absolute; font-size: 7rem; font-weight: 900; opacity: 0.03; color: white; pointer-events: none; z-index: -1; }
-      .f1 { top: -60px; left: -150px; animation: float 10s infinite alternate; }
-      .f2 { bottom: -60px; right: -150px; animation: float 12s infinite alternate-reverse; }
+      .float { position: absolute; font-size: 6rem; font-weight: 900; opacity: 0.05; color: white; pointer-events: none; z-index: -1; }
+      .f1 { top: -60px; left: -120px; animation: float 10s infinite alternate; }
+      .f2 { bottom: -60px; right: -120px; animation: float 12s infinite alternate-reverse; }
   }
 
   .cards-wrapper {
     display: flex; gap: 2.5rem; flex-wrap: wrap; justify-content: center;
     
     .card {
-      position: relative; width: 300px; height: 380px;
-      background: rgba(15, 15, 15, 0.8); border: 2px solid $border; border-radius: 16px;
+      position: relative; width: 280px; height: 360px;
+      background: $panel; border: 2px solid $border; border-radius: 16px;
       display: flex; flex-direction: column; align-items: center; justify-content: center;
-      cursor: pointer; transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+      cursor: pointer; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275);
       
       .icon { font-size: 4.5rem; margin-bottom: 20px; filter: grayscale(1); transition: 0.3s; }
       h3 { font-size: 1.8rem; margin-bottom: 10px; font-weight: 800; color: #555; transition: 0.3s; text-transform: uppercase; }
       .langs { font-size: 0.85rem; color: #444; font-family: 'Fira Code'; transition: 0.3s; }
 
-      /* SINGLE COLOR BORDER ANIMATION */
-      &:hover { transform: translateY(-10px); background: #000; .icon { filter: grayscale(0); transform: scale(1.1); } h3 { color: white; } .langs { color: #888; } }
-      &.front:hover { border-color: $cyan; box-shadow: 0 0 40px rgba(0, 243, 255, 0.2); h3, .icon { color: $cyan; } }
-      &.back:hover { border-color: $green; box-shadow: 0 0 40px rgba(10, 255, 0, 0.2); h3, .icon { color: $green; } }
-      &.db:hover { border-color: $pink; box-shadow: 0 0 40px rgba(255, 0, 85, 0.2); h3, .icon { color: $pink; } }
+      /* DESKTOP HOVER: Only light up on mouse over */
+      @media (min-width: 901px) {
+        &:hover { transform: translateY(-10px); background: #000; .icon { filter: grayscale(0); transform: scale(1.1); } h3 { color: white; } .langs { color: #888; } }
+        &.front:hover { border-color: $cyan; box-shadow: 0 0 40px rgba(0, 243, 255, 0.2); h3, .icon { color: $cyan; } }
+        &.back:hover { border-color: $green; box-shadow: 0 0 40px rgba(10, 255, 0, 0.2); h3, .icon { color: $green; } }
+        &.db:hover { border-color: $pink; box-shadow: 0 0 40px rgba(255, 0, 85, 0.2); h3, .icon { color: $pink; } }
+      }
     }
   }
 }
 
-/* EDITOR (Perfect Fit) */
+/* EDITOR */
 .editor {
-  /* Calculate exact height remaining after navbar */
-  height: calc(100vh - 80px); 
-  display: flex; gap: 20px; padding: 20px; 
-  overflow: hidden; 
-  animation: slideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+  height: calc(100vh - 80px); display: flex; gap: 20px; padding: 20px; overflow: hidden; animation: slideUp 0.5s ease;
   
-  /* SIDEBAR (Blurred) */
   .sidebar {
-    width: 280px; flex-shrink: 0;
-    background: rgba(15, 15, 15, 0.6); backdrop-filter: blur(12px);
-    border: 1px solid $border; border-radius: 12px; padding: 20px; 
-    display: flex; flex-direction: column;
-    
+    width: 260px; background: $panel; border: 1px solid $border; border-radius: 12px; padding: 20px; display: flex; flex-direction: column;
     .header { display: flex; justify-content: space-between; margin-bottom: 20px; button {background:none; border:none; color: #666; font-weight:bold; cursor:pointer; &:hover{color:white;}} span { color:$cyan; font-weight:900; text-transform: uppercase; } }
-    
-    .file-list { 
-        flex: 1; overflow-y: auto; padding-right: 5px; 
-       
+    .file-list { flex: 1; overflow-y: auto; padding-right: 5px; 
        .file-row { 
-           padding: 12px; margin-bottom: 8px; border-radius: 6px; 
-           background: rgba(255,255,255,0.03); border: 1px solid transparent;
-           display: flex; flex-direction: column; gap: 10px; /* Stack Name and Buttons */
-           transition: 0.2s;
-           
-           &:hover { background: rgba(255,255,255,0.08); border-color: rgba(255,255,255,0.1); }
-           &.active { border-left: 3px solid $cyan; background: rgba(0, 243, 255, 0.05); }
-           
-           .fname { font-weight: 600; color: #ddd; cursor: pointer; word-break: break-all; }
-           
-           /* DIRECT BUTTONS CONTAINER */
-           .actions {
-               display: flex; gap: 8px;
-               button {
-                   flex: 1; padding: 6px; border-radius: 4px; border: none; font-weight: 800; font-size: 0.75rem; cursor: pointer; transition: 0.2s;
-               }
-               .btn-open { background: $cyan; color: black; &:hover{ opacity: 0.8; } }
-               .btn-del { background: #333; color: $pink; border: 1px solid $pink; &:hover{ background: $pink; color: white; } }
-           }
+           padding: 12px; margin-bottom: 5px; border-radius: 6px; cursor: pointer; color: #888; background: #111; font-weight: 600;
+           display: flex; justify-content: space-between; align-items: center; position: relative;
+           &:hover { background: #1a1a1a; color: white; }
+           &.active { border-left: 3px solid $cyan; background: rgba(0, 243, 255, 0.1); color: $cyan; }
+           .fname { flex: 1; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+           .actions { display: flex; gap: 5px; }
+           .btn-open { background: $cyan; color:black; border:none; font-weight:800; padding:4px 8px; font-size:0.7rem; border-radius:2px; cursor:pointer;}
+           .btn-del { background: transparent; color:$pink; border:1px solid $pink; font-weight:800; padding:4px 8px; font-size:0.7rem; border-radius:2px; cursor:pointer;}
        }
        .empty-list { text-align: center; color: #333; margin-top: 20px; }
     }
-    .add-btn { margin-top: 15px; padding: 14px; background: $cyan; color: #000; font-weight: 800; border: none; border-radius: 6px; cursor: pointer; text-transform: uppercase; &:hover{ box-shadow: 0 0 20px rgba(0, 243, 255, 0.4); } }
+    .add-btn { margin-top: 15px; padding: 14px; background: $cyan; color: black; font-weight: 800; border: none; border-radius: 6px; cursor: pointer; text-transform: uppercase; transition: 0.2s; &:hover{ box-shadow: 0 0 20px rgba(0, 243, 255, 0.4); } }
   }
 
-  /* CANVAS (Blurred) */
   .canvas {
-    flex: 1; 
-    background: rgba(10, 10, 10, 0.6); backdrop-filter: blur(12px);
-    border-radius: 12px; border: 1px solid $border; padding: 25px; 
-    display: flex; flex-direction: column;
-    
-    .toolbar { display: flex; justify-content: space-between; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #222; span {font-family:'Fira Code'; font-size: 1.1rem; color: #fff;} button { background: $green; color:black; border:none; padding:8px 24px; border-radius:4px; font-weight:800; cursor:pointer; text-transform: uppercase; &:hover{box-shadow: 0 0 20px rgba(10, 255, 0, 0.4);} } }
-    textarea { flex: 1; background: transparent; border: none; outline: none; color: #ddd; font-family: 'Fira Code'; font-size: 1.1rem; line-height: 1.6; resize: none; overflow-y: auto; }
+    flex: 1; background: $panel; border-radius: 12px; border: 1px solid $border; padding: 25px; display: flex; flex-direction: column;
+    .toolbar { display: flex; justify-content: space-between; margin-bottom: 20px; padding-bottom: 15px; border-bottom: 1px solid #222; span {font-family:'Fira Code'; font-size:1.1rem; color: white;} button { background: $green; color:black; border:none; padding:8px 24px; border-radius:4px; font-weight:800; cursor:pointer; text-transform: uppercase; &:hover{box-shadow: 0 0 20px rgba(10, 255, 0, 0.4);} } }
+    textarea { flex: 1; background: transparent; border: none; outline: none; color: #ddd; font-family: 'Fira Code'; font-size: 1rem; line-height: 1.6; resize: none; overflow-y: auto; }
     .no-select { flex: 1; display: flex; align-items: center; justify-content: center; color: #333; font-size: 1.5rem; font-weight: bold; text-transform: uppercase; letter-spacing: 2px; }
   }
 }
 
-/* MODAL (Blurred) */
-.modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.8); backdrop-filter: blur(8px); display: flex; justify-content: center; align-items: center; z-index: 1000; .modal { background: rgba(10,10,10,0.9); padding: 2.5rem; border: 2px solid #333; border-radius: 16px; width: 90%; max-width: 450px; h3 { margin-top: 0; color: white; text-transform: uppercase; } input { width: 100%; padding: 16px; margin: 25px 0; background: #000; border: 1px solid #333; color: white; font-size: 1.1rem; outline: none; border-radius: 6px; &:focus{ border-color: $cyan; } } .btns { display: flex; justify-content: flex-end; gap: 15px; button { padding: 12px 24px; border-radius: 4px; cursor: pointer; border: none; font-weight: 800; text-transform: uppercase; } .save { background: $cyan; color: black; } .cancel { background: transparent; color: #666; } } } }
+/* MODAL & TOAST (Same as before) */
+.modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 1000; .modal { background: #0a0a0a; padding: 2.5rem; border: 2px solid #333; border-radius: 16px; width: 90%; max-width: 450px; h3 { margin-top: 0; color: white; } input { width: 100%; padding: 16px; margin: 25px 0; background: #000; border: 1px solid #333; color: white; outline: none; &:focus{ border-color: $cyan; } } .btns { display: flex; justify-content: flex-end; gap: 15px; button { padding: 12px 24px; border-radius: 4px; cursor: pointer; border: none; font-weight: 800; } .save { background: $cyan; color: black; } .cancel { background: transparent; color: #666; } } } }
+.toast { position: fixed; top: 30px; left: 50%; transform: translate(-50%, -100px); background: #111; border: 2px solid; padding: 14px 40px; border-radius: 4px; color: white; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; z-index: 2000; transition: 0.3s; &.show { transform: translate(-50%, 0); } &.success { border-color: $green; color: $green; } &.update { border-color: $cyan; color: $cyan; } &.delete { border-color: $pink; color: $pink; } }
 
-/* TOAST */
-.toast { position: fixed; top: 30px; left: 50%; transform: translate(-50%, -100px); background: #111; border: 2px solid; padding: 14px 40px; border-radius: 4px; color: white; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; z-index: 2000; transition: 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); &.show { transform: translate(-50%, 0); } &.success { border-color: $green; color: $green; } &.update { border-color: $cyan; color: $cyan; } &.delete { border-color: $pink; color: $pink; } }
-
-@keyframes zoomIn { from{opacity:0; transform:scale(0.95);} to{opacity:1; transform:scale(1);} }
+@keyframes fadeIn { from{opacity:0; transform:translateY(20px);} to{opacity:1; transform:translateY(0);} }
 @keyframes float { 0% { transform: translateY(0); } 100% { transform: translateY(20px); } }
-@keyframes slideUp { from { opacity: 0; transform: translateY(50px); } to { opacity: 1; transform: translateY(0); } }
+@keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-/* --- MOBILE RESPONSIVE --- */
+/* --- MOBILE RESPONSIVE (Strict Updates) --- */
 @media (max-width: 900px) {
   .navbar { padding: 0 1rem; .brand { font-size: 1.1rem; } .user-controls .name { display: none; } }
   
   .dashboard { 
       padding: 1rem; overflow-y: auto; 
       .floating-text-container { margin-bottom: 2rem; .main-title { font-size: 2rem; } .float { display: none; } }
+      
       .cards-wrapper { 
-          flex-direction: column; width: 100%; gap: 1.5rem;
-          .card { width: 100%; height: 120px; flex-direction: row; justify-content: flex-start; padding: 0 25px; gap: 20px; border-color: #333; .icon { font-size: 3rem; margin: 0; } h3 { font-size: 1.4rem; margin: 0; } .langs { display: none; } }
+          flex-direction: column; 
+          align-items: center; // Forces Cards to Center
+          width: 100%; 
+          gap: 1.5rem;
+          padding-bottom: 20px;
+          
+          .card { 
+              /* 1. WIDTH 68% */
+              width: 68% !important; 
+              height: 140px; 
+              flex-direction: row; 
+              justify-content: flex-start; 
+              padding: 0 20px; 
+              gap: 20px; 
+              
+              /* 2. ALWAYS COLORED ON MOBILE (No Hover needed) */
+              background: #000;
+              
+              .icon { font-size: 3rem; margin: 0; filter: grayscale(0); transform: scale(1.1); }
+              h3 { font-size: 1.4rem; margin: 0; color: white; }
+              .langs { display: none; }
+
+              /* Persistent Neon Borders & Shadows */
+              &.front { border-color: $cyan; box-shadow: 0 0 20px rgba(0, 243, 255, 0.3); h3, .icon { color: $cyan; } }
+              &.back { border-color: $green; box-shadow: 0 0 20px rgba(10, 255, 0, 0.3); h3, .icon { color: $green; } }
+              &.db { border-color: $pink; box-shadow: 0 0 20px rgba(255, 0, 85, 0.3); h3, .icon { color: $pink; } }
+          }
       }
   }
 
   .editor { 
-      flex-direction: column; padding: 10px; height: auto; overflow-y: auto;
-      .sidebar { width: 100%; height: auto; max-height: 300px; flex: none; margin-bottom: 15px; }
-      .canvas { height: 60vh; flex: none; }
+      flex-direction: column; 
+      padding: 10px; 
+      /* Height auto ensures it flows naturally on mobile */
+      height: auto; 
+      overflow-y: auto;
+      
+      /* 3. SIDEBAR 86% & CENTERED */
+      .sidebar { 
+          width: 86% !important; 
+          margin: 0 auto 15px auto; /* Centered */
+          height: 250px; 
+          flex: none; 
+      }
+      
+      .canvas { flex: 1; min-height: 400px; }
   }
 }
-@import url('https://fonts.googleapis.com/css2?family=Montserrat:wght@400;700;900&family=Fira+Code&display=swap');
-
-/* --- COLORS --- */
-$bg: #000000;
-$text: #ffffff;
-
-/* --- CONTAINER (ANIMATION HUB) --- */
-.app-container {
-  height: 100vh; width: 100vw;
-  background: $bg; color: $text;
-  font-family: 'Montserrat', sans-serif;
-  display: flex; flex-direction: column; overflow: hidden;
-  
-  /* CRITICAL: Defines how the animation behaves */
-  transition: transform 0.8s cubic-bezier(0.19, 1, 0.22, 1), 
-              opacity 0.8s ease, 
-              filter 0.8s ease;
-  
-  /* State 1: Normal (Loaded) */
-  opacity: 1;
-  transform: scale(1);
-  filter: blur(0px);
-
-  /* State 2: Entrance Animation (Scale Up) */
-  &.scale-in { 
-    animation: entrance 0.8s cubic-bezier(0.19, 1, 0.22, 1) forwards; 
-  }
-
-  /* State 3: LOGOUT ANIMATION (Warp Out) */
-  &.page-exit {
-    transform: scale(1.1) translateY(-10px); /* Moves slightly up and zooms in */
-    opacity: 0;
-    filter: blur(20px) brightness(1.5); /* Blurs and flashes bright before vanishing */
-    pointer-events: none; /* Prevents clicks during animation */
-  }
-}
-
-@keyframes entrance {
-  from { opacity: 0; transform: scale(0.95); filter: blur(10px); }
-  to { opacity: 1; transform: scale(1); filter: blur(0px); }
-}
-
-/* ... Keep the rest of your Navbar, Dashboard, Editor CSS below ... */
