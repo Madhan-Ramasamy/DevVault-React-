@@ -1,0 +1,25 @@
+<svg width="100" height="100" viewBox="0 0 100 100" fill="none" xmlns="http://www.w3.org/2000/svg">
+  <style>
+    .spin { transform-origin: center; animation: spin 4s linear infinite; }
+    .pulse { transform-origin: center; animation: pulse 2s ease-in-out infinite alternate; }
+    @keyframes spin { 100% { transform: rotate(360deg); } }
+    @keyframes pulse { 0% { transform: scale(0.9); opacity: 0.8; } 100% { transform: scale(1.1); opacity: 1; } }
+  </style>
+  
+  <defs>
+    <filter id="neon-glow" x="-50%" y="-50%" width="200%" height="200%">
+      <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
+      <feMerge><feMergeNode in="coloredBlur"/><feMergeNode in="SourceGraphic"/></feMerge>
+    </filter>
+  </defs>
+
+  <circle class="spin" cx="50" cy="50" r="40" stroke="#00f3ff" strokeWidth="2" strokeDasharray="10 10" strokeOpacity="0.5" />
+  
+  <circle cx="50" cy="50" r="30" stroke="#0aff00" strokeWidth="3" filter="url(#neon-glow)" />
+
+  <path d="M50 35C44 35 40 39 40 43C35 43 32 46 32 50C32 55 36 58 40 58H60C65 58 68 54 68 50C68 44 64 35 50 35Z" 
+        fill="white" fillOpacity="0.9" filter="url(#neon-glow)" />
+  
+  <path class="pulse" d="M38 45L32 50L38 55" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+  <path class="pulse" d="M62 45L68 50L62 55" stroke="#000" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" />
+</svg>
