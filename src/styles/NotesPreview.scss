@@ -57,7 +57,7 @@ $border: #222;
       h3 { font-size: 1.8rem; margin-bottom: 10px; font-weight: 800; color: #555; transition: 0.3s; text-transform: uppercase; }
       .langs { font-size: 0.85rem; color: #444; font-family: 'Fira Code'; transition: 0.3s; }
 
-      /* DESKTOP HOVER: Only light up on mouse over */
+      /* DESKTOP HOVER */
       @media (min-width: 901px) {
         &:hover { transform: translateY(-10px); background: #000; .icon { filter: grayscale(0); transform: scale(1.1); } h3 { color: white; } .langs { color: #888; } }
         &.front:hover { border-color: $cyan; box-shadow: 0 0 40px rgba(0, 243, 255, 0.2); h3, .icon { color: $cyan; } }
@@ -74,7 +74,20 @@ $border: #222;
   
   .sidebar {
     width: 260px; background: $panel; border: 1px solid $border; border-radius: 12px; padding: 20px; display: flex; flex-direction: column;
-    .header { display: flex; justify-content: space-between; margin-bottom: 20px; button {background:none; border:none; color: #666; font-weight:bold; cursor:pointer; &:hover{color:white;}} span { color:$cyan; font-weight:900; text-transform: uppercase; } }
+    
+    .header { 
+        display: flex; justify-content: space-between; margin-bottom: 20px; align-items: center;
+        
+        /* FIX: DEFAULT COLOR IS VISIBLE NOW (#ccc instead of #666) */
+        button {
+            background:none; border:none; 
+            color: #ccc; /* Visible on Desktop by default */
+            font-weight:bold; cursor:pointer; font-size: 1rem;
+            &:hover{color:white;}
+        } 
+        span { color:$cyan; font-weight:900; text-transform: uppercase; } 
+    }
+    
     .file-list { flex: 1; overflow-y: auto; padding-right: 5px; 
        .file-row { 
            padding: 12px; margin-bottom: 5px; border-radius: 6px; cursor: pointer; color: #888; background: #111; font-weight: 600;
@@ -99,7 +112,7 @@ $border: #222;
   }
 }
 
-/* MODAL & TOAST (Same as before) */
+/* MODAL & TOAST */
 .modal-bg { position: fixed; inset: 0; background: rgba(0,0,0,0.9); backdrop-filter: blur(5px); display: flex; justify-content: center; align-items: center; z-index: 1000; .modal { background: #0a0a0a; padding: 2.5rem; border: 2px solid #333; border-radius: 16px; width: 90%; max-width: 450px; h3 { margin-top: 0; color: white; } input { width: 100%; padding: 16px; margin: 25px 0; background: #000; border: 1px solid #333; color: white; outline: none; &:focus{ border-color: $cyan; } } .btns { display: flex; justify-content: flex-end; gap: 15px; button { padding: 12px 24px; border-radius: 4px; cursor: pointer; border: none; font-weight: 800; } .save { background: $cyan; color: black; } .cancel { background: transparent; color: #666; } } } }
 .toast { position: fixed; top: 30px; left: 50%; transform: translate(-50%, -100px); background: #111; border: 2px solid; padding: 14px 40px; border-radius: 4px; color: white; font-weight: 800; text-transform: uppercase; letter-spacing: 1px; z-index: 2000; transition: 0.3s; &.show { transform: translate(-50%, 0); } &.success { border-color: $green; color: $green; } &.update { border-color: $cyan; color: $cyan; } &.delete { border-color: $pink; color: $pink; } }
 
@@ -107,38 +120,21 @@ $border: #222;
 @keyframes float { 0% { transform: translateY(0); } 100% { transform: translateY(20px); } }
 @keyframes slideUp { from { opacity: 0; transform: translateY(30px); } to { opacity: 1; transform: translateY(0); } }
 
-/* --- MOBILE RESPONSIVE (Strict Updates) --- */
+/* --- MOBILE RESPONSIVE --- */
 @media (max-width: 900px) {
   .navbar { padding: 0 1rem; .brand { font-size: 1.1rem; } .user-controls .name { display: none; } }
   
   .dashboard { 
       padding: 1rem; overflow-y: auto; 
       .floating-text-container { margin-bottom: 2rem; .main-title { font-size: 2rem; } .float { display: none; } }
-      
       .cards-wrapper { 
-          flex-direction: column; 
-          align-items: center; // Forces Cards to Center
-          width: 100%; 
-          gap: 1.5rem;
-          padding-bottom: 20px;
-          
+          flex-direction: column; align-items: center; width: 100%; gap: 1.5rem; padding-bottom: 20px;
           .card { 
-              /* 1. WIDTH 68% */
-              width: 68% !important; 
-              height: 140px; 
-              flex-direction: row; 
-              justify-content: flex-start; 
-              padding: 0 20px; 
-              gap: 20px; 
-              
-              /* 2. ALWAYS COLORED ON MOBILE (No Hover needed) */
-              background: #000;
-              
+              width: 68% !important; height: 140px; flex-direction: row; justify-content: flex-start; padding: 0 20px; gap: 20px; 
+              background: #000; /* Permanent Color */
               .icon { font-size: 3rem; margin: 0; filter: grayscale(0); transform: scale(1.1); }
               h3 { font-size: 1.4rem; margin: 0; color: white; }
               .langs { display: none; }
-
-              /* Persistent Neon Borders & Shadows */
               &.front { border-color: $cyan; box-shadow: 0 0 20px rgba(0, 243, 255, 0.3); h3, .icon { color: $cyan; } }
               &.back { border-color: $green; box-shadow: 0 0 20px rgba(10, 255, 0, 0.3); h3, .icon { color: $green; } }
               &.db { border-color: $pink; box-shadow: 0 0 20px rgba(255, 0, 85, 0.3); h3, .icon { color: $pink; } }
@@ -147,20 +143,18 @@ $border: #222;
   }
 
   .editor { 
-      flex-direction: column; 
-      padding: 10px; 
-      /* Height auto ensures it flows naturally on mobile */
-      height: auto; 
-      overflow-y: auto;
+      flex-direction: column; padding: 10px; height: auto; overflow-y: auto;
       
-      /* 3. SIDEBAR 86% & CENTERED */
       .sidebar { 
-          width: 86% !important; 
-          margin: 0 auto 15px auto; /* Centered */
-          height: 250px; 
-          flex: none; 
+          width: 86% !important; margin: 0 auto 15px auto; height: 250px; flex: none;
+          
+          /* --- BACK BUTTON VISIBILITY FIX --- */
+          .header button {
+             color: white !important; /* Forces White on Mobile */
+             opacity: 1;
+             padding: 10px; /* Bigger touch area */
+          }
       }
-      
       .canvas { flex: 1; min-height: 400px; }
   }
 }
